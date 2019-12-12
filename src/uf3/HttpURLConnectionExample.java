@@ -5,13 +5,16 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import javax.net.ssl.HttpsURLConnection;
+import java.util.Scanner;
 
 public class HttpURLConnectionExample {
-
 	private final String USER_AGENT = "Mozilla/5.0";
+	private static String url;
 
 	public static void main(String[] args) throws Exception {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Introdueix URL");
+		url = scan.nextLine();
 
 		HttpURLConnectionExample http = new HttpURLConnectionExample();
 
@@ -20,25 +23,27 @@ public class HttpURLConnectionExample {
 		
 		System.out.println("\nTesting 2 - Send Http POST request");
 		http.sendPost();
-
+		
+		scan.close();
 	}
 
 	// HTTP GET request
 	private void sendGet() throws Exception {
-
-		String url = "http://www.insbaixcamp.org/";
+		Scanner scan = new Scanner(System.in);
 		
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		// optional default is GET
-		con.setRequestMethod("GET");
+		System.out.println("Quin mètode vols, GET o PUT?");
+		String method = scan.next();
+		con.setRequestMethod(method);
 
 		//add request header
 		con.setRequestProperty("User-Agent", USER_AGENT);
 
 		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("\nSending "+method+" request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);
 
 		BufferedReader in = new BufferedReader(
@@ -54,12 +59,12 @@ public class HttpURLConnectionExample {
 		//print result
 		System.out.println(response.toString());
 
+		scan.close();
 	}
 	
 	// HTTP POST request
 	private void sendPost() throws Exception {
 
-		String url = "http://www.insbaixcamp.cat/moodle/";
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -97,5 +102,4 @@ public class HttpURLConnectionExample {
 		System.out.println(response.toString());
 
 	}
-
 }
